@@ -18,9 +18,14 @@ class OpenNav extends React.Component{
   }
 }
 
+<<<<<<< HEAD
 
 
 //Prueba Master 1
+=======
+//Prueba Develop1
+//Prueba Feacture-1
+>>>>>>> develop
 
 class NavBar extends React.Component{
   render(){
@@ -115,6 +120,11 @@ class VYoutube extends React.Component{
     );
   }
 }
+
+
+//Cambio para develop
+//Cambio para prueba de Feacture-1
+
 
 class Tab extends React.Component{
   render(){
