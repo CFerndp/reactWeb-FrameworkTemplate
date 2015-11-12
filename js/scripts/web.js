@@ -19,6 +19,15 @@ class OpenNav extends React.Component{
 }
 
 class NavBar extends React.Component{
+  constructor(props){
+
+    super(props);
+
+    this.state={
+      newInstance:true
+    }
+  }
+
   render(){
 
     let firstElement="";
@@ -34,10 +43,13 @@ class NavBar extends React.Component{
       }
     });
 
-    location.href="#"
-    requestAnimationFrame(()=>{
-      location.href=firstElement;
-    });
+    if(this.state.newInstance===true){
+      location.href="#"
+      requestAnimationFrame(()=>{
+        location.href=firstElement;
+      });
+      this.setState({newInstance:false})
+    }
 
     return(
       <div className="NavBar" style={{display: this.props.display}} onClick={this.props.handleCloseNav}>
