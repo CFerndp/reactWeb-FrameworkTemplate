@@ -34,7 +34,10 @@ class NavBar extends React.Component{
       }
     });
 
-    //location.href=firstElement;
+    location.href="#"
+    requestAnimationFrame(()=>{
+      location.href=firstElement;
+    });
 
     return(
       <div className="NavBar" style={{display: this.props.display}} onClick={this.props.handleCloseNav}>
