@@ -18,14 +18,9 @@ class OpenNav extends React.Component{
   }
 }
 
-<<<<<<< HEAD
-
-
 //Prueba Master 1
-=======
 //Prueba Develop1
 //Prueba Feacture-1
->>>>>>> develop
 
 class NavBar extends React.Component{
   render(){
