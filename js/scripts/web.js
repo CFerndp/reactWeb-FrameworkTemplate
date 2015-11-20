@@ -19,37 +19,17 @@ class OpenNav extends React.Component{
 }
 
 class NavBar extends React.Component{
-  constructor(props){
-
-    super(props);
-
-    this.state={
-      newInstance:true
-    }
-  }
-
   render(){
-
-    let firstElement="";
 
     let elements = this.props.info.map((item,index)=> {
       if(item.key !== "link"){
-        if(index==0){
-          firstElement = "#"+item.key;
-        }
         return <a href={"#"+item.key} key={"#"+item.key}>{item.key}</a>
       }else{
         return <a href={item.url} key={"#"+item.ref}>{item.ref}</a>
       }
     });
 
-    if(this.state.newInstance===true){
-      location.href="#"
-      requestAnimationFrame(()=>{
-        location.href=firstElement;
-      });
-      this.setState({newInstance:false})
-    }
+
 
     return(
       <div className="NavBar" style={{display: this.props.display}} onClick={this.props.handleCloseNav}>
@@ -63,9 +43,26 @@ class NavBar extends React.Component{
 
 class Stext extends React.Component{
   render(){
+
+    let ps = [];
+    let texts= this.props.children;
+
+    if(!Array.isArray(texts)){
+      texts  = [texts];
+    }
+
+    for(let i=0;i<texts.length;i++){
+      const t = texts[i];
+
+      ps.push(
+        <p key={"K"+t}>{t}</p>
+      );
+    }
+
     return (
       <div className="sText">
-        {this.props.children}
+        {ps}
+        <br/>
       </div>
     );
   }
@@ -75,7 +72,7 @@ class Btext extends React.Component{
   render(){
     return (
       <div className="sText">
-        <b>{this.props.children}</b>
+        <b>{this.props.children}</b><br/>
       </div>
     );
   }
@@ -85,13 +82,25 @@ class Title extends React.Component {
 
   render(){
     return (
-      <h1 className="TabTitle w3-animate-opacity" >{this.props.children}</h1>
+      <div className="TabTitle w3-animate-opacity" ><h1>{this.props.children}</h1><br/></div>
+    );
+  }
+}
+
+class Subtitle extends React.Component {
+
+  render(){
+    return (
+      <div className="TabSubtitle w3-animate-opacity"><h3>{this.props.children}</h3><br/></div>
     );
   }
 }
 
 class Card extends React.Component{
+
   render(){
+
+    console.log("Card:",this.props);
     return (
       <div className="w3-card-24 w3-animate-opacity">
 
@@ -102,7 +111,16 @@ class Card extends React.Component{
           <div className="w3-container">
           <p>{this.props.info}</p>
           </div>
+      </div>
+    );
+  }
+}
 
+class Elink extends React.Component{
+  render(){
+    return (
+      <div className="Elink">
+        <a href={"mailto:"+this.props.children}>Email: {this.props.children}</a><br/>
       </div>
     );
   }
@@ -124,10 +142,15 @@ class VYoutube extends React.Component{
   }
 }
 
-
-//Cambio para develop
-//Cambio para prueba de Feacture-1
-
+class Iframe extends React.Component{
+  render(){
+    return (
+      <div className="Iframe">
+          <iframe src={this.props.info} frameborder="0" align="middle" allowfullscreen/>
+     </div>
+    );
+  }
+}
 
 class Tab extends React.Component{
   render(){
@@ -147,6 +170,10 @@ class Tab extends React.Component{
           return <Title key={"Tk"+id+index}>{item.value}</Title>
           break;
 
+        case "subtitle":
+          return <Subtitle key={"Stk"+id+index}>{item.value}</Subtitle>
+          break;
+
         case "yvideo":
           return <VYoutube key={"VYk"+id+index} url={item.value}/>
           break;
@@ -157,6 +184,14 @@ class Tab extends React.Component{
 
         case "btext":
           return <Btext key={"Bk"+id+index}>{item.value}</Btext>
+          break;
+
+        case "elink":
+          return <Elink key={"Ek"+id+index}>{item.value}</Elink>
+          break;
+
+        case "iframe":
+          return <Iframe key={"IK"+id+index} info={item.value}/>
 
         default:
           console.log("Objeto Vacio");
@@ -208,46 +243,42 @@ class Body extends React.Component{
   constructor(props){
 
     super(props);
+
+    var d = new Date();
+
+    var yaux = d.getFullYear();
     this.state = {
+          pointOfEnter: "Home",
+          pointOfEnterBool:false,
           inf : [
-                  {key:"Lorem",value:[
-                    {type:"title",value:"LOREM IPSUM"},
-                    {type:"btext",value:"Esto es un ejemplo de texto resaltado"},
-                    {type:"btext",value:"Esto es un ejemplo de texto resaltado 2"},
+                  {key:"Home",value:[
+                    {type:"title",value:"Ultimas Noticias"},
                     {type:"stext",value:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla placerat, leo eget scelerisque hendrerit, risus neque dictum nisl, ut varius turpis nisl quis odio. Nunc in odio luctus quam porttitor eleifend vel ut leo. Nunc condimentum diam nisl, sit amet suscipit mi vehicula vitae. In elit tortor, venenatis id augue et, placerat elementum nulla. Sed rutrum, urna id tincidunt ornare, ipsum nisl iaculis dui, non pretium nibh nunc et orci. Quisque sollicitudin urna ipsum, sit amet vulputate purus ultricies eget. Nam sodales diam in mi mollis, feugiat lobortis ante dignissim. Aliquam dignissim vel leo sit amet elementum. Morbi dolor nunc, sodales vel tincidunt at, scelerisque vel purus. Integer semper suscipit euismod. Ut vestibulum quam semper libero pellentesque rhoncus."},
                     {type:"yvideo",value:"https://www.youtube.com/embed/H3ZCKXX7tVI"},
                     {type:"card",value:{title:"Ipsum",info:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla placerat, leo eget scelerisque hendrerit, risus neque dictum nisl, ut varius turpis nisl quis odio. Nunc in odio luctus quam porttitor eleifend vel ut leo. Nunc condimentum diam nisl, sit amet suscipit mi vehicula vitae. In elit tortor, venenatis id augue et, placerat elementum nulla. Sed rutrum, urna id tincidunt ornare, ipsum nisl iaculis dui, non pretium nibh nunc et orci. Quisque sollicitudin urna ipsum, sit amet vulputate purus ultricies eget. Nam sodales diam in mi mollis, feugiat lobortis ante dignissim. Aliquam dignissim vel leo sit amet elementum. Morbi dolor nunc, sodales vel tincidunt at, scelerisque vel purus. Integer semper suscipit euismod. Ut vestibulum quam semper libero pellentesque rhoncus."}}
-                  ]
+                                    ]
                   },
-                  {key:"Donec",value:[
-                    {type:"title",value:"DONEC EFFICITUR"},
-                    {type:"stext",value:"Donec efficitur nec eros scelerisque sollicitudin. Nulla convallis mauris et nibh consequat, eleifend ullamcorper purus aliquet. Nulla ex purus, commodo at sapien sit amet, iaculis tempor magna. Vivamus auctor maximus libero vel pharetra. Sed egestas felis non dictum sollicitudin. Phasellus bibendum arcu vel orci mattis molestie. In nec aliquet enim."}
-                                     ]
+                  {key:"link",url:"/tienda",ref:"Tienda"},
+                  {key:"Contáctanos",value:[
+                    {type:"title",value:"Contáctanos"},
+                    {type:"iframe",value:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2901.359750244833!2d-5.8397651463746785!3d43.34858500310817!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0000000000000000%3A0xa97251142e47fb1d!2sTalleres+Ardys!5e0!3m2!1ses!2ses!4v1443082291944"},
+                    {type:"subtitle",value:"Puedes localizarnos en la siguiente direccion"},
+                    {type:"stext",value:["Ardys Ardys Automotive S.L.U","Fuente del Forno 1","33008 Oviedo Asturias(España)","Puedes llamarnos a","TLF: 984059302","MOVIL: 622 22 79 14"]},
+                    {type:"subtitle",value:"Puedes llamarnos a"},
+                    {type:"stext",value:["TLF: 984059302","MOVIL: 622 22 79 14"]},
+                    {type:"subtitle",value:"Escribenos a"},
+                    {type:"elink",value:"info@ardys.es"}
+                                           ]
                   },
-                  {key:"Maecenas",value:[
-                    {type:"title",value:"MAECENAS DAPIBUS"},
-                    {type:"stext",value:"Maecenas dapibus convallis enim non porttitor. Quisque ultrices convallis libero, et varius augue tempor nec. Maecenas a nisl diam. Cras justo nulla, malesuada nec orci vitae, porttitor ullamcorper libero. Sed vel mollis metus. Suspendisse condimentum neque nec orci vestibulum, at vulputate sem semper. Curabitur facilisis massa hendrerit iaculis molestie. Maecenas vulputate in mauris pellentesque dictum. Aenean bibendum egestas nibh, eget elementum nisi. Morbi sed quam ac nisi rhoncus rutrum quis aliquam est. In varius quam vel nulla rhoncus, suscipit iaculis lectus ultrices. Vestibulum enim lacus, mollis vel pulvinar quis, rhoncus nec magna. Aliquam tincidunt pharetra ante et finibus."}
-                                        ]
-                  },
-                  {key:"Phasellus",value:[
-                    {type:"title",value:"PHASELLUS RUTRUM"},
+                  {key:"Acerca de nosotros",value:[
+                    {type:"title",value:"Acerca de nosotros"},
                     {type:"stext",value:"Phasellus rutrum dolor odio, consectetur pulvinar orci ornare quis. Duis elit odio, iaculis sit amet molestie vel, pretium vel augue. Integer pretium odio vitae lobortis condimentum. Phasellus vitae ligula viverra, laoreet nisl vel, euismod metus. Duis at elit dui. Suspendisse vitae arcu diam. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Etiam eget libero nibh."}
                                          ]
-                  },
-                  {key:"Ejemplo 2",value:[
-                    {type:"title",value:"Ejemplo 2"},
-                    {type:"stext",value:"Phasellus rutrum dolor odio, consectetur pulvinar orci ornare quis. Duis elit odio, iaculis sit amet molestie vel, pretium vel augue. Integer pretium odio vitae lobortis condimentum. Phasellus vitae ligula viverra, laoreet nisl vel, euismod metus. Duis at elit dui. Suspendisse vitae arcu diam. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Etiam eget libero nibh."}
-                                         ]
-                  },
-                  {key:"Ejemplo 3",value:[
-                    {type:"title",value:"Ejemplo 3"},
-                    {type:"stext",value:"Phasellus rutrum dolor odio, consectetur pulvinar orci ornare quis. Duis elit odio, iaculis sit amet molestie vel, pretium vel augue. Integer pretium odio vitae lobortis condimentum. Phasellus vitae ligula viverra, laoreet nisl vel, euismod metus. Duis at elit dui. Suspendisse vitae arcu diam. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Etiam eget libero nibh."}
-                                         ]
-                  },
-                  {key:"link",url:"http://www.google.es",ref:"Google"}
+                  }
                 ],
         navDisplay:"none",
-        navDisBool:false
+        navDisBool:false,
+        year:yaux
     };
 
     this.handleClickCloseNav = (e)=>{
@@ -274,16 +305,32 @@ class Body extends React.Component{
     };
   }
 
+  pointOfEnter(){
+    if(!this.state.pointOfEnterBool){
+      location.href="#";
+      setTimeout(()=>{
+        location.href="#"+this.state.pointOfEnter;
+        window.clearTimeout(this);
+      });
+    }
+
+    this.setState({pointOfEnterBool:true});
+  }
+
+  componentDidMount(){
+    this.pointOfEnter();
+  }
+
   render() {
 
-    console.log("State",this.state);
+
     return (
     <div className="flex-container">
-      <Header>Titulo 1</Header>
+      <Header>ARDYS AUTOMOTIVE S.L</Header>
       <OpenNav handleOpenNav={this.handleClickNav}/>
       <NavBar handleCloseNav={this.handleClickCloseNav} display={this.state.navDisplay} info={this.state.inf}/>
       <InfoContent info={this.state.inf}/>
-      <Footer info="Info del footer">Footer 1</Footer>
+      <Footer info={"© "+this.state.year+" Ardys Automotive S.L"}>Ardys Automotive</Footer>
       </div>
       );
     }

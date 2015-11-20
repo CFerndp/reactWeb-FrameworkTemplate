@@ -1,1 +1,2 @@
 #001 Cada vez que se abre NavBar, invoca a la primera Tab
+#002 Solución al bug #001 era solo para firefox, arreglado para todos los browsers
